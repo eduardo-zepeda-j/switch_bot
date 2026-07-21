@@ -140,7 +140,7 @@ flowchart LR
 
 4. **Filtro de histéresis selectivo**: El cooldown de 90 frames aplica solo a conmutaciones automáticas de cámara. Marcadores manuales, de IA y anomalías vocales pasan sin filtro.
 
-5. **Escritura atómica de archivos**: Los archivos .edl y .drp se escriben en modo append con flush atómico para garantizar consistencia ante crashes.
+5. **Escritura atómica non-blocking**: Los archivos .edl y .drp se escriben en modo append con flush + fsync atómico, delegando toda la I/O de disco a `asyncio.to_thread()` para no bloquear el event loop durante el despacho cuádruple. Esto garantiza que una latencia de disco no afecte la ejecución de los demás pipelines.
 
 6. **Patrón Strategy para backends de IA**: El `IAEnricher` delega las operaciones de embeddings y análisis contextual a un `IABackend` abstracto. Esto permite intercambiar entre `BedrockBackend` (cloud) y `LocalBackend` (Ollama/llama.cpp) sin modificar la lógica del enriquecedor. El backend se selecciona antes del inicio de sesión y permanece inmutable durante la sesión activa.
 
@@ -510,24 +510,32 @@ class OBSPipeline:
 
 
 class MetadataPipeline:
-    """Escritura de log append-only y compilación .drp."""
+    """Escritura de log append-only y compilación .drp.
+    
+    La I/O de disco (write + flush + fsync) se delega a asyncio.to_thread()
+    para no bloquear el event loop durante el despacho cuádruple.
+    """
     
     def __init__(self, output_dir: Path, config: SystemConfig):
         ...
     
     async def execute(self, payload: EnrichedPayload) -> None:
-        """Escribe evento en .jsonl y actualiza .drp."""
+        """Prepara datos en memoria y delega escritura a thread pool."""
         ...
 
 
 class EDLPipeline:
-    """Motor de generación EDL CMX 3600."""
+    """Motor de generación EDL CMX 3600.
+    
+    La I/O de disco (write + flush + fsync) se delega a asyncio.to_thread()
+    para no bloquear el event loop durante el despacho cuádruple.
+    """
     
     def __init__(self, output_path: Path, config: SystemConfig):
         ...
     
     async def execute(self, payload: EnrichedPayload) -> None:
-        """Agrega evento con marcador clasificado al .edl."""
+        """Serializa evento en memoria y delega escritura a thread pool."""
         ...
 ```
 

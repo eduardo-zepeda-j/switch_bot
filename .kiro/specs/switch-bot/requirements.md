@@ -160,7 +160,7 @@ Switch_bot es un sistema de automatización de producción multicámara en tiemp
 
 #### Criterios de Aceptación
 
-1. THE Pipeline_Metadata SHALL escribir cada evento en un archivo append-only .jsonl con ID de personaje, timecode SMPTE y nota asociada.
+1. THE Pipeline_Metadata SHALL escribir cada evento en un archivo append-only .jsonl con ID de personaje, timecode SMPTE y nota asociada, delegando la I/O de disco (write + flush + fsync) a un thread del pool via asyncio.to_thread para no bloquear el event loop ni la ejecución de los demás pipelines.
 2. THE Compilador_DRP SHALL generar la primera línea del archivo .drp con la configuración completa del proyecto: versión, masterTimecode, videoMode, array de sources (Black, Camera 1-4, Color Bars, Color 1-2, Media Player 1), mixEffectBlocks, downstreamKeys y recordingId.
 3. WHEN el Motor_Decisión ejecuta un corte de cámara, THE Compilador_DRP SHALL agregar una nueva línea JSON al archivo .drp con el masterTimecode y el source index actualizado.
 4. THE Compilador_DRP SHALL generar archivos .drp compatibles con el formato JSON Lines (newline-delimited JSON) de DaVinci Resolve.
@@ -176,7 +176,7 @@ Switch_bot es un sistema de automatización de producción multicámara en tiemp
 2. THE Clasificador_Notas SHALL categorizar cada marcador según su fuente: Manual (operador) o IA/Contexto (Bedrock/Guión).
 3. THE Motor_EDL SHALL asignar códigos de color a los marcadores según la siguiente clasificación: Red para MANUAL_NOTE, TOS, ERROR_DICCION, CONFUSION y REPETICION; Green para SCRIPT_MATCH; Magenta para AI_PROMPT; Cyan para ENTRADA; Yellow para SALIDA.
 4. THE Motor_EDL SHALL formatear cada evento como un evento de 1 frame con la sintaxis: `NNN  001      V     C        TC_IN TC_OUT TC_IN TC_OUT` seguido de un comentario `|C:ResolveColor{Color} |M:{TIPO} |D:1`.
-5. THE Motor_EDL SHALL escribir el archivo .edl de forma atómica y en tiempo real durante la sesión de producción.
+5. THE Motor_EDL SHALL escribir el archivo .edl de forma atómica (flush + fsync) y non-blocking (delegando la I/O de disco a un thread del pool via asyncio.to_thread) en tiempo real durante la sesión de producción, sin bloquear la ejecución de los demás pipelines.
 6. THE Motor_EDL SHALL numerar los eventos EDL de forma secuencial comenzando en 001 con formato de 3 dígitos.
 
 ### Requisito 14: Serialización y Round-Trip del Formato DRP

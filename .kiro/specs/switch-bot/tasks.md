@@ -134,22 +134,22 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - **Property 8: El Panic Button pausa y restaura la automatización**
     - **Valida: Requisitos 9.1, 9.3**
 
-- [ ] 5. Checkpoint — Verificar motores de decisión
+- [x] 5. Checkpoint — Verificar motores de decisión
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
-- [ ] 6. Pipelines de ejecución
-  - [ ] 6.1 Implementar interfaz base Pipeline y QuadDispatcher
+- [x] 6. Pipelines de ejecución
+  - [x] 6.1 Implementar interfaz base Pipeline y QuadDispatcher
     - Crear `switch_bot/pipelines/base.py` con interfaz abstracta `Pipeline` (execute, is_healthy)
     - Crear `switch_bot/pipelines/dispatcher.py` con `QuadDispatcher`
     - Implementar dispatch paralelo con `asyncio.gather(*tasks, return_exceptions=True)`
     - Implementar `DispatchResult` con conteo de éxitos/fallas
     - _Requisitos: 16.2, 16.3, 16.4_
 
-  - [ ] 6.2 Test de propiedad: payload se despacha a todos los pipelines con tolerancia a fallas
+  - [x] 6.2 Test de propiedad: payload se despacha a todos los pipelines con tolerancia a fallas
     - **Property 9: El Payload Enriquecido se despacha a todos los pipelines con tolerancia a fallas**
     - **Valida: Requisitos 16.2, 16.3**
 
-  - [ ] 6.3 Implementar Pipeline ATEM (PyAtemMax TCP async)
+  - [x] 6.3 Implementar Pipeline ATEM (PyAtemMax TCP async)
     - Crear `switch_bot/pipelines/atem_pipeline.py`
     - Implementar conexión TCP asíncrona al switcher ATEM
     - Implementar `execute()`: conmutar entrada del mix effect block al source index
@@ -157,7 +157,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Worker thread dedicado para sockets ATEM
     - _Requisitos: 10.1, 10.2, 10.3, 10.4_
 
-  - [ ] 6.4 Implementar Pipeline OBS (WebSocket/MCP)
+  - [x] 6.4 Implementar Pipeline OBS (WebSocket/MCP)
     - Crear `switch_bot/pipelines/obs_pipeline.py`
     - Implementar conexión WebSocket a OBS Studio
     - Implementar `execute()`: cambiar escena OBS al personaje/encuadre
@@ -165,22 +165,22 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Sincronizar estado al reconectar
     - _Requisitos: 11.1, 11.2, 11.3, 11.4_
 
-  - [ ] 6.5 Implementar Pipeline Metadata (.jsonl + .drp)
+  - [x] 6.5 Implementar Pipeline Metadata (.jsonl + .drp)
     - Crear `switch_bot/pipelines/metadata_pipeline.py`
-    - Implementar `execute()`: escribir evento en archivo append-only .jsonl
+    - Implementar `execute()`: preparar datos en memoria y delegar escritura a thread pool via `asyncio.to_thread()`
     - Integrar `DRPDocument` para compilar líneas en el .drp en tiempo real
-    - Escritura atómica con flush para consistencia ante crashes
+    - Escritura atómica non-blocking con flush + fsync en thread dedicado para no bloquear el event loop
     - _Requisitos: 12.1, 12.2, 12.3, 12.4_
 
-  - [ ] 6.6 Implementar Pipeline EDL (Motor CMX 3600)
+  - [x] 6.6 Implementar Pipeline EDL (Motor CMX 3600)
     - Crear `switch_bot/pipelines/edl_pipeline.py`
-    - Implementar `execute()`: agregar evento EDL con clasificación de marcador y color
+    - Implementar `execute()`: serializar evento CMX 3600 en memoria y delegar escritura a thread pool via `asyncio.to_thread()`
     - Integrar `EDLDocument` para escritura en tiempo real
     - Implementar clasificación de notas: Manual vs IA/Contexto
-    - Escritura atómica con flush
+    - Escritura atómica non-blocking con flush + fsync en thread dedicado para no bloquear el event loop
     - _Requisitos: 13.1, 13.2, 13.3, 13.4, 13.5, 13.6_
 
-- [ ] 7. Checkpoint — Verificar pipelines
+- [x] 7. Checkpoint — Verificar pipelines
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 - [ ] 8. Backend de IA multi-proveedor (Patrón Strategy)
