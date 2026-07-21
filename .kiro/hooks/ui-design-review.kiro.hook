@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "UI Design Review",
+  "description": "Revisa el código de GUI (PyQt6) al crear o editar archivos en switch_bot/gui/ para garantizar un diseño visual profesional, consistente y funcional para una herramienta de producción broadcast.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "switch_bot/gui/*.py"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Revisa este archivo de GUI PyQt6 y verifica que cumpla con las siguientes directrices de diseño visual para una aplicación de producción broadcast profesional:\n\n1. **Tema oscuro**: La aplicación debe usar un tema oscuro (fondo #1e1e2e o similar, texto claro #cdd6f4). Las aplicaciones de producción de video siempre usan temas oscuros para no cansar la vista del operador.\n\n2. **Jerarquía visual clara**: \n   - Los indicadores de tally (cámaras activas) deben ser prominentes con colores vivos (rojo para on-air, verde para preview).\n   - El Panic Button debe ser grande, rojo, y visualmente inconfundible.\n   - Los selectores de backend IA deben estar agrupados en un panel colapsable para no ocupar espacio innecesario durante la producción.\n\n3. **Tipografía**: Usar fuentes monoespaciadas para timecodes (QFont con familia \"JetBrains Mono\", \"Fira Code\" o \"Consolas\" como fallback). Texto general con sans-serif.\n\n4. **Espaciado y márgenes**: Mínimo 8px entre widgets, 16px de margen en contenedores. Usar QGridLayout o QVBoxLayout/QHBoxLayout con spacing consistente.\n\n5. **Feedback visual**: \n   - Indicadores de conexión (backend IA, ATEM, OBS) con círculos de color: verde=conectado, amarillo=reconectando, rojo=desconectado.\n   - Animaciones sutiles de transición al cambiar estados (usando QPropertyAnimation si aplica).\n   - Los dropdowns de modelos deben mostrar loading spinner mientras consultan modelos disponibles.\n\n6. **Responsividad**: Los layouts deben adaptarse al redimensionamiento de ventana. Usar stretch factors y size policies apropiados.\n\n7. **Accesibilidad**: Tooltips descriptivos en todos los controles. Atajos de teclado para acciones críticas (Panic = Escape o F12).\n\nSi encuentras código que no cumple estas directrices, sugiere los cambios específicos con código corregido."
+  }
+}

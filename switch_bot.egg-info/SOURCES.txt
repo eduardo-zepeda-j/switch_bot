@@ -1,0 +1,14 @@
+pyproject.toml
+switch_bot/__init__.py
+switch_bot.egg-info/PKG-INFO
+switch_bot.egg-info/SOURCES.txt
+switch_bot.egg-info/dependency_links.txt
+switch_bot.egg-info/requires.txt
+switch_bot.egg-info/top_level.txt
+switch_bot/capture/__init__.py
+switch_bot/engines/__init__.py
+switch_bot/gui/__init__.py
+switch_bot/inference/__init__.py
+switch_bot/models/__init__.py
+switch_bot/pipelines/__init__.py
+switch_bot/serializers/__init__.py

@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "aws-docs": {
+      "command": "uvx",
+      "args": ["awslabs.aws-documentation-mcp-server@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "python-docs": {
+      "command": "uvx",
+      "args": ["--from", "readthedocs-mcp", "readthedocs-mcp"],
+      "env": {
+        "READTHEDOCS_URL": "https://docs.python.org/3/",
+        "READTHEDOCS_SLUG": "python",
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "disabled": true,
+      "autoApprove": []
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"],
+      "env": {},
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

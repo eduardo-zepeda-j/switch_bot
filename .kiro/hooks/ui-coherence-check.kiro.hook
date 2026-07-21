@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "UI Coherence Check",
+  "description": "Al completar cualquier tarea del spec que involucre GUI, verifica la coherencia visual global entre todos los archivos de gui/.",
+  "version": "1",
+  "when": {
+    "type": "postTaskExecution"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Se acaba de completar una tarea del spec. Si la tarea involucró cambios en la GUI (archivos en switch_bot/gui/), realiza una verificación de coherencia visual:\n\n1. Lee todos los archivos .py en switch_bot/gui/\n2. Verifica que TODOS usen la misma paleta de colores y el mismo QSS base\n3. Verifica que los componentes compartidos (TallyIndicator, StatusDot, TimecodeDisplay) estén definidos en un módulo centralizado (por ejemplo gui/widgets.py o gui/theme.py) y se importen desde ahí — NO duplicados en cada ventana\n4. Verifica que los layouts sean consistentes: mismo spacing, mismos márgenes, mismos border-radius\n5. Verifica que los atajos de teclado no tengan conflictos entre ventanas\n\nSi la tarea NO involucró GUI, no hagas nada.\nSi encuentras inconsistencias, repórtalas al usuario con las correcciones sugeridas."
+  },
+  "workspaceFolderName": "SWITCH_BOT",
+  "shortName": "ui-coherence-check"
+}

@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "UI New File Review",
+  "description": "Revisa archivos de GUI recién creados para asegurar que desde el inicio sigan las directrices de diseño visual broadcast profesional.",
+  "version": "1",
+  "when": {
+    "type": "fileCreated",
+    "patterns": [
+      "switch_bot/gui/*.py"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Se ha creado un nuevo archivo de GUI. Revísalo para asegurar que desde el primer momento siga el sistema de diseño de Switch_bot:\n\n**Paleta de colores obligatoria (tema oscuro broadcast):**\n- Background principal: #1e1e2e\n- Background secundario (panels): #313244\n- Surface (cards/widgets): #45475a\n- Texto principal: #cdd6f4\n- Texto secundario: #a6adc8\n- Acento primario (acciones): #89b4fa (azul)\n- On-air/Tally activo: #f38ba8 (rojo)\n- Preview/Tally preview: #a6e3a1 (verde)\n- Warning: #f9e2af (amarillo)\n- Panic Button: #f38ba8 fondo, #1e1e2e texto, borde 3px solid #eba0ac\n\n**Stylesheet base requerida:**\nCada ventana principal debe aplicar un QSS con la paleta anterior. Si no lo tiene, sugiere agregarlo.\n\n**Componentes estándar:**\n- TallyIndicator: QFrame con borde redondeado (border-radius: 8px), mínimo 60x60px\n- StatusDot: QWidget circular 12x12px para indicadores de conexión\n- TimecodeDisplay: QLabel con font monoespaciada 14pt+ y alignment right\n- SectionHeader: QLabel bold 11pt con margen bottom 4px\n\nVerifica que el archivo use estos patrones. Si no, sugiere las correcciones con código."
+  }
+}
