@@ -99,9 +99,9 @@ class TestMarkerColorMap:
         """Req 13.3: Yellow para SALIDA."""
         assert MARKER_COLOR_MAP[MarkerType.SALIDA] == EDLColor.Yellow
 
-    def test_map_has_10_entries(self):
-        """El mapa tiene exactamente 10 entradas definidas en el diseño."""
-        assert len(MARKER_COLOR_MAP) == 10
+    def test_map_has_11_entries(self):
+        """El mapa tiene exactamente 11 entradas (10 originales + PANIC)."""
+        assert len(MARKER_COLOR_MAP) == 11
 
     def test_all_map_values_are_edl_colors(self):
         for marker, color in MARKER_COLOR_MAP.items():

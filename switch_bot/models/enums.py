@@ -53,6 +53,7 @@ MARKER_COLOR_MAP: dict[MarkerType, EDLColor] = {
     MarkerType.SCRIPT_MATCH: EDLColor.Green,
     MarkerType.IMAGEN: EDLColor.Green,
     MarkerType.AI_PROMPT: EDLColor.Magenta,
+    MarkerType.PANIC: EDLColor.Red,
     MarkerType.ENTRADA: EDLColor.Cyan,
     MarkerType.SALIDA: EDLColor.Yellow,
 }

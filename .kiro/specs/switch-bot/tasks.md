@@ -85,11 +85,11 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - **Property 1: Round-trip de serialización DRP**
     - **Valida: Requisitos 14.1, 14.2, 14.3, 14.4**
 
-- [~] 3. Checkpoint — Verificar modelos y serializadores
+- [x] 3. Checkpoint — Verificar modelos y serializadores
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 - [ ] 4. Script Parser y Motor de Decisión
-  - [~] 4.1 Implementar ScriptParser con soporte PDF/MD/JSON
+  - [x] 4.1 Implementar ScriptParser con soporte PDF/MD/JSON
     - Crear `switch_bot/engines/script_parser.py`
     - Implementar dataclasses `ScriptBlock` y `ScriptDocument`
     - Implementar `ScriptParser.load()` con detección de formato (PDF via PyMuPDF/pdfplumber, MD via parsing de texto, JSON directo)
@@ -97,32 +97,32 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Lanzar `ScriptFormatError` con mensaje descriptivo si el formato es inválido
     - _Requisitos: 3.1, 3.2, 3.3, 3.4_
 
-  - [~] 4.2 Test de propiedad: documentos con formato inválido generan error descriptivo
+  - [x] 4.2 Test de propiedad: documentos con formato inválido generan error descriptivo
     - **Property 14: Documentos de guión con formato inválido generan error descriptivo**
     - **Valida: Requisitos 3.4**
 
-  - [~] 4.3 Implementar DecisionEngine con lógica de evaluación
+  - [x] 4.3 Implementar DecisionEngine con lógica de evaluación
     - Crear `switch_bot/engines/decision_engine.py`
     - Implementar prioridad: habla activa → cámara hablante; mirada a otro → reacción; sin habla → no cambio
     - Usar character_camera_map del guión para resolver personaje → cámara
     - _Requisitos: 8.1, 2.4_
 
-  - [~] 4.4 Implementar HysteresisFilter con cooldown de 90 frames
+  - [x] 4.4 Implementar HysteresisFilter con cooldown de 90 frames
     - Crear `switch_bot/engines/hysteresis_filter.py`
     - Implementar `should_allow_switch()` con cooldown configurable (90 frames = 3s a 30fps)
     - Implementar `force_allow()` para bypass de marcadores manuales/IA/anomalías
     - Implementar propiedad `is_cooling_down`
     - _Requisitos: 8.2, 8.3, 8.4_
 
-  - [~] 4.5 Test de propiedad: histéresis bloquea conmutaciones automáticas dentro del cooldown
+  - [x] 4.5 Test de propiedad: histéresis bloquea conmutaciones automáticas dentro del cooldown
     - **Property 3: El filtro de histéresis bloquea conmutaciones automáticas dentro del cooldown**
     - **Valida: Requisitos 8.2, 8.4**
 
-  - [~] 4.6 Test de propiedad: marcadores manuales/IA/anomalías bypasean histéresis
+  - [x] 4.6 Test de propiedad: marcadores manuales/IA/anomalías bypasean histéresis
     - **Property 4: Marcadores manuales, de IA y de anomalías vocales bypasean el filtro**
     - **Valida: Requisitos 4.4, 7.6, 8.3**
 
-  - [~] 4.7 Implementar PanicButton con override inmediato
+  - [x] 4.7 Implementar PanicButton con override inmediato
     - Crear `switch_bot/engines/panic_button.py`
     - Implementar `activate()`: pausa toda automatización + registra bandera EDL con SMPTE_TC
     - Implementar `deactivate()`: restaura operación automática
@@ -130,26 +130,26 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Garantizar respuesta < 1 frame time (33.33 ms)
     - _Requisitos: 9.1, 9.2, 9.3, 9.4_
 
-  - [~] 4.8 Test de propiedad: Panic Button pausa y restaura la automatización
+  - [-] 4.8 Test de propiedad: Panic Button pausa y restaura la automatización
     - **Property 8: El Panic Button pausa y restaura la automatización**
     - **Valida: Requisitos 9.1, 9.3**
 
-- [~] 5. Checkpoint — Verificar motores de decisión
+- [ ] 5. Checkpoint — Verificar motores de decisión
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 - [ ] 6. Pipelines de ejecución
-  - [~] 6.1 Implementar interfaz base Pipeline y QuadDispatcher
+  - [ ] 6.1 Implementar interfaz base Pipeline y QuadDispatcher
     - Crear `switch_bot/pipelines/base.py` con interfaz abstracta `Pipeline` (execute, is_healthy)
     - Crear `switch_bot/pipelines/dispatcher.py` con `QuadDispatcher`
     - Implementar dispatch paralelo con `asyncio.gather(*tasks, return_exceptions=True)`
     - Implementar `DispatchResult` con conteo de éxitos/fallas
     - _Requisitos: 16.2, 16.3, 16.4_
 
-  - [~] 6.2 Test de propiedad: payload se despacha a todos los pipelines con tolerancia a fallas
+  - [ ] 6.2 Test de propiedad: payload se despacha a todos los pipelines con tolerancia a fallas
     - **Property 9: El Payload Enriquecido se despacha a todos los pipelines con tolerancia a fallas**
     - **Valida: Requisitos 16.2, 16.3**
 
-  - [~] 6.3 Implementar Pipeline ATEM (PyAtemMax TCP async)
+  - [ ] 6.3 Implementar Pipeline ATEM (PyAtemMax TCP async)
     - Crear `switch_bot/pipelines/atem_pipeline.py`
     - Implementar conexión TCP asíncrona al switcher ATEM
     - Implementar `execute()`: conmutar entrada del mix effect block al source index
@@ -157,7 +157,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Worker thread dedicado para sockets ATEM
     - _Requisitos: 10.1, 10.2, 10.3, 10.4_
 
-  - [~] 6.4 Implementar Pipeline OBS (WebSocket/MCP)
+  - [ ] 6.4 Implementar Pipeline OBS (WebSocket/MCP)
     - Crear `switch_bot/pipelines/obs_pipeline.py`
     - Implementar conexión WebSocket a OBS Studio
     - Implementar `execute()`: cambiar escena OBS al personaje/encuadre
@@ -165,14 +165,14 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Sincronizar estado al reconectar
     - _Requisitos: 11.1, 11.2, 11.3, 11.4_
 
-  - [~] 6.5 Implementar Pipeline Metadata (.jsonl + .drp)
+  - [ ] 6.5 Implementar Pipeline Metadata (.jsonl + .drp)
     - Crear `switch_bot/pipelines/metadata_pipeline.py`
     - Implementar `execute()`: escribir evento en archivo append-only .jsonl
     - Integrar `DRPDocument` para compilar líneas en el .drp en tiempo real
     - Escritura atómica con flush para consistencia ante crashes
     - _Requisitos: 12.1, 12.2, 12.3, 12.4_
 
-  - [~] 6.6 Implementar Pipeline EDL (Motor CMX 3600)
+  - [ ] 6.6 Implementar Pipeline EDL (Motor CMX 3600)
     - Crear `switch_bot/pipelines/edl_pipeline.py`
     - Implementar `execute()`: agregar evento EDL con clasificación de marcador y color
     - Integrar `EDLDocument` para escritura en tiempo real
@@ -180,11 +180,11 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Escritura atómica con flush
     - _Requisitos: 13.1, 13.2, 13.3, 13.4, 13.5, 13.6_
 
-- [~] 7. Checkpoint — Verificar pipelines
+- [ ] 7. Checkpoint — Verificar pipelines
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 - [ ] 8. Backend de IA multi-proveedor (Patrón Strategy)
-  - [~] 8.1 Implementar IABackendConfig con persistencia JSON
+  - [ ] 8.1 Implementar IABackendConfig con persistencia JSON
     - Crear `switch_bot/ia/__init__.py`
     - Crear `switch_bot/ia/backend_config.py` con dataclass `IABackendConfig`
     - Implementar campos: backend_type, embedding_model_id, llm_model_id, aws_region, aws_profile, local_runtime, local_base_url, gguf_model_dir, timeouts
@@ -193,25 +193,25 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar persistencia en `~/.switch_bot/config.json` (lectura/escritura)
     - _Requisitos: 19.6, 19.1_
 
-  - [~] 8.2 Test de propiedad: round-trip de persistencia de IABackendConfig
+  - [ ] 8.2 Test de propiedad: round-trip de persistencia de IABackendConfig
     - **Property 15: Round-trip de persistencia de IABackendConfig**
     - **Valida: Requisitos 19.6**
 
-  - [~] 8.3 Implementar IAModelInfo e IAModelCatalog
+  - [ ] 8.3 Implementar IAModelInfo e IAModelCatalog
     - Crear `switch_bot/ia/model_catalog.py`
     - Implementar dataclass `IAModelInfo`: model_id, name, model_type ("embedding"/"llm"), size_bytes, context_window, description
     - Implementar dataclass `IAModelCatalog`: backend_type, embedding_models, llm_models, last_updated
     - Implementar `get_embedding_model_ids()` y `get_llm_model_ids()`
     - _Requisitos: 19.2, 19.3_
 
-  - [~] 8.4 Implementar interfaz abstracta IABackend (ABC)
+  - [ ] 8.4 Implementar interfaz abstracta IABackend (ABC)
     - Crear `switch_bot/ia/backend_base.py` con clase abstracta `IABackend`
     - Definir métodos abstractos: initialize(), validate_connection(timeout), list_available_models(), generate_embeddings(texts), analyze_context(prompt, context), compute_similarity(text_a, text_b)
     - Definir propiedades abstractas: backend_type, is_connected
     - Implementar excepciones: `BackendConnectionError`, `BackendTimeoutError`, `ModelDiscoveryError`
     - _Requisitos: 19.4, 19.5, 19.8, 19.9_
 
-  - [~] 8.5 Implementar BedrockBackend (AWS Bedrock — Titan Embeddings V2 + Claude 3.5)
+  - [ ] 8.5 Implementar BedrockBackend (AWS Bedrock — Titan Embeddings V2 + Claude 3.5)
     - Crear `switch_bot/ia/bedrock_backend.py` con clase `BedrockBackend(IABackend)`
     - Implementar `initialize()`: crear cliente boto3 con credenciales AWS
     - Implementar `validate_connection(timeout)`: health check con timeout de 10s
@@ -222,7 +222,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar retry con backoff exponencial (max 3 reintentos) para timeout/throttle
     - _Requisitos: 6.6, 19.2, 19.4, 19.5_
 
-  - [~] 8.6 Implementar LocalBackend (Ollama / llama.cpp / GGUF)
+  - [ ] 8.6 Implementar LocalBackend (Ollama / llama.cpp / GGUF)
     - Crear `switch_bot/ia/local_backend.py` con clase `LocalBackend(IABackend)`
     - Implementar `initialize()`: verificar que runtime local (Ollama/llama.cpp) esté activo
     - Implementar `validate_connection(timeout)`: verificar accesibilidad del runtime local
@@ -233,13 +233,13 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Manejar errores: runtime no iniciado, modelo no encontrado, out of memory
     - _Requisitos: 6.7, 19.3, 19.4, 19.5, 19.9_
 
-  - [~] 8.7 Implementar EnrichmentResult (resultado normalizado)
+  - [ ] 8.7 Implementar EnrichmentResult (resultado normalizado)
     - Crear `switch_bot/ia/enrichment_result.py` con dataclass `EnrichmentResult`
     - Campos: similarity_score [0.0, 1.0], is_deviation (bool), detected_text, expected_text, marker_type, color, metadata
     - Garantizar estructura idéntica independientemente del backend activo
     - _Requisitos: 6.2, 6.3, 19.8_
 
-  - [~] 8.8 Implementar IAEnricher (orquestador agnóstico al backend — Strategy Pattern)
+  - [ ] 8.8 Implementar IAEnricher (orquestador agnóstico al backend — Strategy Pattern)
     - Crear `switch_bot/ia/ia_enricher.py` con clase `IAEnricher`
     - Constructor recibe `IABackend` (interfaz abstracta) + `ScriptDocument`
     - Implementar `vectorize_script()`: genera embeddings del guión completo usando backend activo como base RAG
@@ -249,31 +249,31 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar manejo de errores de backend: log con SMPTE_TC + continuar sin detener sesión
     - _Requisitos: 6.1, 6.2, 6.3, 6.4, 6.5, 6.8, 17.1, 17.2, 17.3, 17.4_
 
-  - [~] 8.9 Test de propiedad: score de similitud semántica acotado entre 0.0 y 1.0
+  - [ ] 8.9 Test de propiedad: score de similitud semántica acotado entre 0.0 y 1.0
     - **Property 18: Score de similitud semántica está acotado entre 0.0 y 1.0**
     - **Valida: Requisitos 6.2**
 
-  - [~] 8.10 Test de propiedad: umbral de similitud genera marcadores de desviación correctamente
+  - [ ] 8.10 Test de propiedad: umbral de similitud genera marcadores de desviación correctamente
     - **Property 19: Umbral de similitud genera marcadores de desviación correctamente**
     - **Valida: Requisitos 6.3**
 
-  - [~] 8.11 Test de propiedad: consistencia de estructura de salida entre backends
+  - [ ] 8.11 Test de propiedad: consistencia de estructura de salida entre backends
     - **Property 17: Consistencia de estructura de salida entre backends**
     - **Valida: Requisitos 19.8**
 
-  - [~] 8.12 Test de propiedad: resiliencia del IAEnricher ante errores de backend
+  - [ ] 8.12 Test de propiedad: resiliencia del IAEnricher ante errores de backend
     - **Property 20: Resiliencia del IAEnricher ante errores de backend**
     - **Valida: Requisitos 6.8**
 
-  - [~] 8.13 Test de propiedad: sugerencias publicitarias cumplen restricciones de formato
+  - [ ] 8.13 Test de propiedad: sugerencias publicitarias cumplen restricciones de formato
     - **Property 11: Las sugerencias publicitarias cumplen las restricciones de formato**
     - **Valida: Requisitos 17.2, 17.3**
 
-- [~] 9. Checkpoint — Verificar backend de IA y enriquecimiento
+- [ ] 9. Checkpoint — Verificar backend de IA y enriquecimiento
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 - [ ] 10. Captura, inferencia y detección de anomalías
-  - [~] 10.1 Implementar CaptureManager con multiprocessing
+  - [ ] 10.1 Implementar CaptureManager con multiprocessing
     - Crear `switch_bot/capture/capture_manager.py`
     - Implementar captura de 4 feeds de video (CSD/DSHOW) en proceso dedicado
     - Implementar captura de audio PCM continuo
@@ -281,11 +281,11 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Usar `multiprocessing.Queue` para enviar frames al proceso de inferencia
     - _Requisitos: 1.1, 1.2, 1.3, 1.4, 5.1, 5.2, 5.3_
 
-  - [~] 10.2 Test de propiedad: resiliencia ante desconexión parcial de feeds
+  - [ ] 10.2 Test de propiedad: resiliencia ante desconexión parcial de feeds
     - **Property 13: Resiliencia ante desconexión parcial de feeds de video**
     - **Valida: Requisitos 1.3**
 
-  - [~] 10.3 Implementar InferenceEngine (MediaPipe + VAD)
+  - [ ] 10.3 Implementar InferenceEngine (MediaPipe + VAD)
     - Crear `switch_bot/inference/inference_engine.py`
     - Implementar `process_frame()`: MediaPipe gaze tracking sobre frame
     - Implementar `process_audio_chunk()`: VAD sobre chunk PCM
@@ -293,18 +293,18 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Proceso dedicado con Queue de entrada y salida
     - _Requisitos: 2.1, 2.2, 2.3, 2.4_
 
-  - [~] 10.4 Implementar VocalAnomalyDetector
+  - [ ] 10.4 Implementar VocalAnomalyDetector
     - Crear `switch_bot/engines/vocal_anomaly_detector.py`
     - Implementar `analyze_segment()`: detectar TOS, ERROR_DICCION, CONFUSION, REPETICION
     - Integrar con IAEnricher para comparación contra patrones y guión (usa interfaz abstracta, agnóstico al backend)
     - Las anomalías generan marcadores sin cooldown (bypass de histéresis)
     - _Requisitos: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
 
-- [~] 11. Checkpoint — Verificar captura, inferencia y anomalías
+- [ ] 11. Checkpoint — Verificar captura, inferencia y anomalías
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 - [ ] 12. Gestión de sesión e inmutabilidad de backend
-  - [~] 12.1 Implementar SessionManager con control de ciclo de vida del backend
+  - [ ] 12.1 Implementar SessionManager con control de ciclo de vida del backend
     - Crear `switch_bot/engines/session_manager.py`
     - Implementar inicio de sesión: validar backend accesible (timeout 10s), bloquear configuración
     - Implementar fin de sesión: desbloquear configuración, invocar generación de sugerencias publicitarias
@@ -312,12 +312,12 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar lógica de fallback: si backend no accesible → mensaje descriptivo + permitir seleccionar alternativo o reintentar sin reiniciar app
     - _Requisitos: 19.4, 19.5, 19.7_
 
-  - [~] 12.2 Test de propiedad: inmutabilidad de configuración de backend durante sesión activa
+  - [ ] 12.2 Test de propiedad: inmutabilidad de configuración de backend durante sesión activa
     - **Property 16: Inmutabilidad de configuración de backend durante sesión activa**
     - **Valida: Requisitos 19.7**
 
 - [ ] 13. GUI, integración y cableado final
-  - [~] 13.1 Implementar GUI PyQt6 con controles de sesión y selector de backend IA
+  - [ ] 13.1 Implementar GUI PyQt6 con controles de sesión y selector de backend IA
     - Crear `switch_bot/gui/main_window.py` con ventana principal PyQt6
     - Implementar selector de Backend IA: dropdown AWS Bedrock / Backend Local
     - Implementar selector de modelos: al elegir backend, poblar dropdowns con modelos disponibles (embedding + LLM) usando `list_available_models()`
@@ -331,7 +331,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Deshabilitar selector de backend/modelos durante sesión activa (inmutabilidad visual)
     - _Requisitos: 4.1, 4.2, 4.3, 9.1, 10.3, 18.1, 18.2, 19.1, 19.2, 19.3, 19.5, 19.7, 19.9_
 
-  - [~] 13.2 Implementar Coordinator (orquestador principal)
+  - [ ] 13.2 Implementar Coordinator (orquestador principal)
     - Crear `switch_bot/coordinator.py`
     - Implementar event loop principal que conecta: CaptureManager → InferenceEngine → IAEnricher → DecisionEngine → HysteresisFilter → QuadDispatcher
     - Integrar PanicButton con prioridad inmediata
@@ -340,19 +340,19 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Gestionar ciclo de vida de procesos (start/stop de sesión)
     - _Requisitos: 5.1, 5.2, 5.3, 16.1, 16.2, 16.3, 16.4_
 
-  - [~] 13.3 Implementar manejo de notas manuales y prompts de IA desde GUI
+  - [ ] 13.3 Implementar manejo de notas manuales y prompts de IA desde GUI
     - Conectar señales de la GUI al Coordinator vía `multiprocessing.Queue`
     - Notas manuales → Pipeline EDL con categoría MANUAL_NOTE, color Red
     - Prompts de IA → IAEnricher → marcador AI_PROMPT, color Magenta
     - Marcadores manuales/IA bypasean el filtro de histéresis
     - _Requisitos: 4.1, 4.2, 4.3, 4.4_
 
-  - [~] 13.4 Implementar presentación de sugerencias publicitarias al finalizar sesión
+  - [ ] 13.4 Implementar presentación de sugerencias publicitarias al finalizar sesión
     - Al cerrar sesión, invocar `IAEnricher.generate_ad_suggestions()` y mostrar resultados en diálogo PyQt6
     - Presentar 3 sugerencias con texto propuesto y timecodes de referencia en formato legible
     - _Requisitos: 17.5_
 
-  - [~] 13.5 Escribir tests de integración del flujo completo
+  - [ ] 13.5 Escribir tests de integración del flujo completo
     - Test E2E: Captura mock → Inferencia → Decisión → 4 Pipelines
     - Test reconexión OBS: desconexión → reconexión → sincronización de escena
     - Test Pipeline ATEM: comando TCP a mock ATEM
@@ -361,7 +361,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Test listado de modelos: Bedrock lista modelos AWS, Local lista modelos Ollama
     - _Requisitos: 16.2, 16.3, 11.3, 11.4, 10.1, 19.2, 19.3, 19.4, 19.5_
 
-- [~] 14. Checkpoint final — Verificar integración completa
+- [ ] 14. Checkpoint final — Verificar integración completa
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 ## Notes

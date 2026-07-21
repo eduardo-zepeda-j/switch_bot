@@ -463,6 +463,7 @@ _EXPECTED_RED = {
     MarkerType.ERROR_DICCION,
     MarkerType.CONFUSION,
     MarkerType.REPETICION,
+    MarkerType.PANIC,
 }
 _EXPECTED_GREEN = {MarkerType.SCRIPT_MATCH, MarkerType.IMAGEN}
 _EXPECTED_MAGENTA = {MarkerType.AI_PROMPT}
