@@ -88,7 +88,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
 - [x] 3. Checkpoint — Verificar modelos y serializadores
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
-- [ ] 4. Script Parser y Motor de Decisión
+- [x] 4. Script Parser y Motor de Decisión
   - [x] 4.1 Implementar ScriptParser con soporte PDF/MD/JSON
     - Crear `switch_bot/engines/script_parser.py`
     - Implementar dataclasses `ScriptBlock` y `ScriptDocument`
@@ -130,7 +130,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Garantizar respuesta < 1 frame time (33.33 ms)
     - _Requisitos: 9.1, 9.2, 9.3, 9.4_
 
-  - [-] 4.8 Test de propiedad: Panic Button pausa y restaura la automatización
+  - [x] 4.8 Test de propiedad: Panic Button pausa y restaura la automatización
     - **Property 8: El Panic Button pausa y restaura la automatización**
     - **Valida: Requisitos 9.1, 9.3**
 
