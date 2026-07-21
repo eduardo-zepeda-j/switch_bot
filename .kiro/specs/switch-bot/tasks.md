@@ -50,8 +50,8 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - **Property 10: El Payload Enriquecido contiene todos los campos requeridos**
     - **Valida: Requisitos 16.1**
 
-- [ ] 2. Serializadores EDL y DRP
-  - [~] 2.1 Implementar EDLEvent y EDLDocument con serialización CMX 3600
+- [x] 2. Serializadores EDL y DRP
+  - [x] 2.1 Implementar EDLEvent y EDLDocument con serialización CMX 3600
     - Crear `switch_bot/serializers/edl_serializer.py`
     - Implementar `EDLEvent.to_cmx3600()` con formato: `NNN  001      V     C        TC_IN TC_OUT TC_IN TC_OUT` + comentario `|C:{color} |M:{tipo} |D:1`
     - Implementar `EDLEvent.from_cmx3600()` para parseo bidireccional
@@ -61,19 +61,19 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Cada evento: tc_out = tc_in + 1 frame, numeración 001..N
     - _Requisitos: 13.1, 13.4, 13.5, 13.6, 15.1, 15.2, 15.3, 15.4_
 
-  - [ ] 2.2 Test de propiedad: round-trip de serialización EDL
+  - [x] 2.2 Test de propiedad: round-trip de serialización EDL
     - **Property 2: Round-trip de serialización EDL**
     - **Valida: Requisitos 15.1, 15.2, 15.3, 15.4**
 
-  - [ ] 2.3 Test de propiedad: eventos EDL de 1 frame con numeración secuencial
+  - [x] 2.3 Test de propiedad: eventos EDL de 1 frame con numeración secuencial
     - **Property 6: Eventos EDL son de 1 frame con numeración secuencial**
     - **Valida: Requisitos 13.4, 13.6**
 
-  - [ ] 2.4 Test de propiedad: mapeo MarkerType → EDLColor
+  - [x] 2.4 Test de propiedad: mapeo MarkerType → EDLColor
     - **Property 5: Mapeo correcto de MarkerType a EDLColor en serialización CMX 3600**
     - **Valida: Requisitos 6.3, 6.4, 6.5, 7.1, 7.2, 7.3, 7.4, 13.3**
 
-  - [~] 2.5 Implementar DRPDocument con serialización JSON Lines
+  - [x] 2.5 Implementar DRPDocument con serialización JSON Lines
     - Crear `switch_bot/serializers/drp_serializer.py`
     - Implementar dataclasses: `DRPSource`, `DRPMixEffectBlock`, `DRPProjectConfig`, `DRPSwitchEvent`
     - Implementar `DRPDocument.serialize()`: primera línea = config JSON, líneas siguientes = eventos JSON
@@ -81,7 +81,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar `DRPDocument.add_switch_event()` con timecode y source
     - _Requisitos: 12.1, 12.2, 12.3, 12.4, 12.5, 14.1, 14.2, 14.3, 14.4_
 
-  - [ ] 2.6 Test de propiedad: round-trip de serialización DRP
+  - [x] 2.6 Test de propiedad: round-trip de serialización DRP
     - **Property 1: Round-trip de serialización DRP**
     - **Valida: Requisitos 14.1, 14.2, 14.3, 14.4**
 
@@ -97,7 +97,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Lanzar `ScriptFormatError` con mensaje descriptivo si el formato es inválido
     - _Requisitos: 3.1, 3.2, 3.3, 3.4_
 
-  - [ ] 4.2 Test de propiedad: documentos con formato inválido generan error descriptivo
+  - [~] 4.2 Test de propiedad: documentos con formato inválido generan error descriptivo
     - **Property 14: Documentos de guión con formato inválido generan error descriptivo**
     - **Valida: Requisitos 3.4**
 
@@ -114,11 +114,11 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar propiedad `is_cooling_down`
     - _Requisitos: 8.2, 8.3, 8.4_
 
-  - [ ] 4.5 Test de propiedad: histéresis bloquea conmutaciones automáticas dentro del cooldown
+  - [~] 4.5 Test de propiedad: histéresis bloquea conmutaciones automáticas dentro del cooldown
     - **Property 3: El filtro de histéresis bloquea conmutaciones automáticas dentro del cooldown**
     - **Valida: Requisitos 8.2, 8.4**
 
-  - [ ] 4.6 Test de propiedad: marcadores manuales/IA/anomalías bypasean histéresis
+  - [~] 4.6 Test de propiedad: marcadores manuales/IA/anomalías bypasean histéresis
     - **Property 4: Marcadores manuales, de IA y de anomalías vocales bypasean el filtro**
     - **Valida: Requisitos 4.4, 7.6, 8.3**
 
@@ -130,7 +130,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Garantizar respuesta < 1 frame time (33.33 ms)
     - _Requisitos: 9.1, 9.2, 9.3, 9.4_
 
-  - [ ] 4.8 Test de propiedad: Panic Button pausa y restaura la automatización
+  - [~] 4.8 Test de propiedad: Panic Button pausa y restaura la automatización
     - **Property 8: El Panic Button pausa y restaura la automatización**
     - **Valida: Requisitos 9.1, 9.3**
 
@@ -145,7 +145,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar `DispatchResult` con conteo de éxitos/fallas
     - _Requisitos: 16.2, 16.3, 16.4_
 
-  - [ ] 6.2 Test de propiedad: payload se despacha a todos los pipelines con tolerancia a fallas
+  - [~] 6.2 Test de propiedad: payload se despacha a todos los pipelines con tolerancia a fallas
     - **Property 9: El Payload Enriquecido se despacha a todos los pipelines con tolerancia a fallas**
     - **Valida: Requisitos 16.2, 16.3**
 
@@ -193,7 +193,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar persistencia en `~/.switch_bot/config.json` (lectura/escritura)
     - _Requisitos: 19.6, 19.1_
 
-  - [ ] 8.2 Test de propiedad: round-trip de persistencia de IABackendConfig
+  - [~] 8.2 Test de propiedad: round-trip de persistencia de IABackendConfig
     - **Property 15: Round-trip de persistencia de IABackendConfig**
     - **Valida: Requisitos 19.6**
 
@@ -249,23 +249,23 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar manejo de errores de backend: log con SMPTE_TC + continuar sin detener sesión
     - _Requisitos: 6.1, 6.2, 6.3, 6.4, 6.5, 6.8, 17.1, 17.2, 17.3, 17.4_
 
-  - [ ] 8.9 Test de propiedad: score de similitud semántica acotado entre 0.0 y 1.0
+  - [~] 8.9 Test de propiedad: score de similitud semántica acotado entre 0.0 y 1.0
     - **Property 18: Score de similitud semántica está acotado entre 0.0 y 1.0**
     - **Valida: Requisitos 6.2**
 
-  - [ ] 8.10 Test de propiedad: umbral de similitud genera marcadores de desviación correctamente
+  - [~] 8.10 Test de propiedad: umbral de similitud genera marcadores de desviación correctamente
     - **Property 19: Umbral de similitud genera marcadores de desviación correctamente**
     - **Valida: Requisitos 6.3**
 
-  - [ ] 8.11 Test de propiedad: consistencia de estructura de salida entre backends
+  - [~] 8.11 Test de propiedad: consistencia de estructura de salida entre backends
     - **Property 17: Consistencia de estructura de salida entre backends**
     - **Valida: Requisitos 19.8**
 
-  - [ ] 8.12 Test de propiedad: resiliencia del IAEnricher ante errores de backend
+  - [~] 8.12 Test de propiedad: resiliencia del IAEnricher ante errores de backend
     - **Property 20: Resiliencia del IAEnricher ante errores de backend**
     - **Valida: Requisitos 6.8**
 
-  - [ ] 8.13 Test de propiedad: sugerencias publicitarias cumplen restricciones de formato
+  - [~] 8.13 Test de propiedad: sugerencias publicitarias cumplen restricciones de formato
     - **Property 11: Las sugerencias publicitarias cumplen las restricciones de formato**
     - **Valida: Requisitos 17.2, 17.3**
 
@@ -281,7 +281,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Usar `multiprocessing.Queue` para enviar frames al proceso de inferencia
     - _Requisitos: 1.1, 1.2, 1.3, 1.4, 5.1, 5.2, 5.3_
 
-  - [ ] 10.2 Test de propiedad: resiliencia ante desconexión parcial de feeds
+  - [~] 10.2 Test de propiedad: resiliencia ante desconexión parcial de feeds
     - **Property 13: Resiliencia ante desconexión parcial de feeds de video**
     - **Valida: Requisitos 1.3**
 
@@ -312,7 +312,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar lógica de fallback: si backend no accesible → mensaje descriptivo + permitir seleccionar alternativo o reintentar sin reiniciar app
     - _Requisitos: 19.4, 19.5, 19.7_
 
-  - [ ] 12.2 Test de propiedad: inmutabilidad de configuración de backend durante sesión activa
+  - [~] 12.2 Test de propiedad: inmutabilidad de configuración de backend durante sesión activa
     - **Property 16: Inmutabilidad de configuración de backend durante sesión activa**
     - **Valida: Requisitos 19.7**
 
@@ -352,7 +352,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Presentar 3 sugerencias con texto propuesto y timecodes de referencia en formato legible
     - _Requisitos: 17.5_
 
-  - [ ] 13.5 Escribir tests de integración del flujo completo
+  - [~] 13.5 Escribir tests de integración del flujo completo
     - Test E2E: Captura mock → Inferencia → Decisión → 4 Pipelines
     - Test reconexión OBS: desconexión → reconexión → sincronización de escena
     - Test Pipeline ATEM: comando TCP a mock ATEM
