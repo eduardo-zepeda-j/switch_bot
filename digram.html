@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura del Sistema V7 - EDL Markers & IA Prompting Engine</title>
+    <style>
+        @page {
+            size: A3 landscape;
+            margin: 10mm;
+            background-color: #f8fafc;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --primary: #1e3a8a;
+            --secondary: #2563eb;
+            --accent-purple: #7c3aed;
+            --accent-green: #16a34a;
+            --accent-orange: #d97706;
+            --accent-red: #dc2626;
+            --aws-amazon: #ea580c;
+            --accent-teal: #0d9488;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            display: block;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: var(--primary);
+            font-size: 20pt;
+            margin: 0 0 6px 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 10.5pt;
+            margin: 0;
+        }
+
+        .fps-selector-container {
+            background-color: #ffffff;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            padding: 8px 20px;
+            margin: 0 auto 20px auto;
+            max-width: 750px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+            text-align: center;
+            font-size: 9.5pt;
+        }
+
+        .fps-label {
+            font-weight: bold;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
+        .fps-badge {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--text-main);
+            display: inline-block;
+            margin: 0 4px;
+        }
+
+        .fps-badge.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .fps-display-value {
+            font-family: monospace;
+            background-color: #e2e8f0;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .flowchart {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .block {
+            background-color: var(--card-bg);
+            border: 1.5px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 14px;
+            text-align: center;
+            font-weight: 600;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .input-grid-block {
+            width: 750px;
+            border-color: var(--primary);
+        }
+
+        .grid-3col {
+            display: table;
+            width: 100%;
+            margin-top: 8px;
+            background: #f1f5f9;
+            padding: 4px;
+            border-radius: 6px;
+        }
+
+        .grid-cell-td {
+            display: table-cell;
+            width: 33.33%;
+            padding: 2px;
+            vertical-align: top;
+        }
+
+        .grid-cell-card {
+            background: white;
+            padding: 6px 8px;
+            font-size: 8.5pt;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            text-align: left;
+        }
+
+        .grid-cell-card strong {
+            display: block;
+            color: var(--primary);
+            margin-bottom: 2px;
+            font-size: 8.5pt;
+        }
+
+        .rag-bedrock-box {
+            width: 800px;
+            background: #fff7ed;
+            border-color: var(--aws-amazon);
+            color: #7c2d12;
+            text-align: left;
+        }
+
+        .decision {
+            background: #fffbeb;
+            border: 2px solid var(--accent-orange);
+            border-radius: 6px;
+            padding: 10px 18px;
+            width: 220px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 9.5pt;
+            margin: 0 auto;
+        }
+
+        .action-block {
+            background-color: #f8fafc;
+            border-radius: 6px;
+            font-size: 8.5pt;
+            padding: 8px 12px;
+            width: 220px;
+        }
+
+        .panic-override {
+            width: 750px;
+            background-color: #fef2f2;
+            border-color: var(--accent-red);
+            color: #991b1b;
+        }
+
+        .task-hub {
+            width: 880px;
+            background-color: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            font-size: 10pt;
+            letter-spacing: 0.3px;
+        }
+
+        .arrow-v {
+            width: 2px;
+            height: 18px;
+            background-color: #94a3b8;
+            margin: 0 auto;
+        }
+
+        .split-row-table {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            margin-top: 5px;
+        }
+
+        .branch-cell {
+            display: table-cell;
+            vertical-align: top;
+            padding: 0 6px;
+        }
+
+        .track-title {
+            font-size: 9pt;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .track-node {
+            width: 100%;
+            margin-bottom: 10px;
+            font-size: 8pt;
+            line-height: 1.35;
+            padding: 8px 10px;
+            text-align: left;
+            background: #ffffff;
+            font-weight: normal;
+        }
+
+        .track-atem .track-node { border-left: 3.5px solid var(--secondary); }
+        .track-obs .track-node { border-left: 3.5px solid var(--accent-purple); }
+        .track-meta .track-node { border-left: 3.5px solid var(--accent-orange); }
+        .track-edl .track-node { border-left: 3.5px solid var(--accent-teal); }
+
+        .tech-tag {
+            display: inline-block;
+            background-color: #f1f5f9;
+            color: #334155;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 7.5pt;
+            margin: 1px;
+            font-family: monospace;
+            border: 1px solid #e2e8f0;
+        }
+
+        .aws-tag {
+            background-color: #fff7ed;
+            color: #c2410c;
+            border-color: #ffedd5;
+            font-weight: bold;
+        }
+
+        .edl-tag {
+            background-color: #f0fdf4;
+            color: #0f766e;
+            border-color: #ccfbf1;
+            font-weight: bold;
+        }
+
+        .calculation-box {
+            width: 750px;
+            background-color: #f0fdf4;
+            border-color: var(--accent-green);
+        }
+
+        .svg-container {
+            text-align: center;
+            margin: 0 auto;
+            line-height: 0;
+        }
+
+        .marker-source-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 4px;
+            padding: 4px 6px;
+            margin-top: 4px;
+            font-size: 7.5pt;
+            color: #166534;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Arquitectura de Switch_bot</h1>
+        <p>Procesamiento multicanal, guion previo, notas en manual/app y motor RAG con AWS Bedrock para marcadores EDL.</p>
+    </div>
+
+    <!-- Selector de FPS / Status Header -->
+    <div class="fps-selector-container">
+        <span class="fps-label">Frecuencia del Sistema Configurada:</span>
+        <span class="fps-badge">60 fps</span>
+        <span class="fps-badge active">30 fps</span>
+        <span class="fps-badge">29.97 fps</span>
+        <span style="margin-left:15px;">Frame Time: <span class="fps-display-value">33.33 ms</span></span>
+        <span style="margin-left:15px;">Alineación SMPTE: <span class="fps-display-value">TOD (Time of Day)</span></span>
+    </div>
+
+    <div class="flowchart">
+        
+        <!-- Fuentes de Entrada Tripartitas -->
+        <div class="block input-grid-block">
+            <strong>Proceso 1: Captura Multicanal Asíncrona & Ingesta Tripartita de Marcadores</strong>
+            <div style="font-size: 8pt; color: var(--text-muted); font-weight: normal; margin-top:2px;">
+                Búfer acoplado a <span class="fps-display-value">30 FPS</span> + Sincronización de Contexto de Producción
+            </div>
+            
+            <div class="grid-3col">
+                <div class="grid-cell-td">
+                    <div class="grid-cell-card">
+                        <strong>1. Video & Audio Stream</strong>
+                        • 4x CSD/DSHOW Video Feeds<br>
+                        • Microphones PCM Stream<br>
+                        • Inferencia MediaPipe + VAD
+                    </div>
+                </div>
+                <div class="grid-cell-td">
+                    <div class="grid-cell-card">
+                        <strong>2. Guión Previo Cargado</strong>
+                        • PDF / Markdown / JSON Script<br>
+                        • Estructura de bloques y cues<br>
+                        • Mapeo de personajes y escenas
+                    </div>
+                </div>
+                <div class="grid-cell-td">
+                    <div class="grid-cell-card">
+                        <strong>3. App / GUI Live Control</strong>
+                        • Botones de Notas Rápidas (App)<br>
+                        • Entrada Manual (Keyboard/UI)<br>
+                        • Marcador por Prompt de IA
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow-v"></div>
+
+        <!-- Memoria Compartida Queue -->
+        <div class="block" style="width: 750px; border-style: dashed; background-color: #fafafa; font-size: 8.5pt;">
+            <strong>Memoria Compartida (<code>multiprocessing.Queue</code> + Thread Event Loop)</strong><br>
+            <span style="font-size:8pt; font-weight:normal; color:var(--text-muted);">
+                Aislamiento total para prevenir bloqueos de frame time. Enruta video a inferencia y prompts/notas al pipeline EDL.
+            </span>
+        </div>
+
+        <div class="arrow-v"></div>
+
+        <!-- Inferencia Local y Contexto -->
+        <div class="block" style="width: 750px; border-color: var(--secondary); font-size: 8.5pt;">
+            <strong>Proceso 2: Pre-procesamiento de Contexto & Visión Artificial</strong><br>
+            <span style="font-size:8pt; font-weight:normal;">Gaze Tracking + Voice Activity Detection (VAD) + Parser de Guión en Memoria</span>
+        </div>
+
+        <div class="arrow-v"></div>
+
+        <!-- AWS BEDROCK MULTI-SOURCE MARKER ENGINE -->
+        <div class="block rag-bedrock-box">
+            <strong style="font-size: 9.5pt; color: #9a3412;">Enriquecimiento Semántico & Marcadores IA: AWS Bedrock API</strong><br>
+            <div style="font-size:8pt; font-weight:normal; line-height: 1.4; margin-top:3px;">
+                • <strong>Ingesta de Guión Vectorizado:</strong> <span class="tech-tag aws-tag">Titan Embeddings V2</span> genera base RAG con la escaleta del programa.<br>
+                • <strong>Análisis Contextual & Prompts:</strong> <span class="tech-tag aws-tag">Claude 3.5 Sonnet / Haiku</span> compara el audio en vivo con el guión o procesa prompts manuales (ej: <em>"Marca esta discrepancia respecto al guión"</em>).<br>
+                • <strong>Generación de Comentario EDL:</strong> Produce notas enriquecidas formateadas para CMX 3600 con categoría, color y metadatos.
+            </div>
+        </div>
+
+        <div class="arrow-v"></div>
+
+        <!-- Decisión -->
+        <div class="decision">
+            ¿Evento Aprobado /<br>Marcador Recibido?
+        </div>
+
+        <!-- Decision Branches Layout -->
+        <div style="width: 500px; margin: 5px auto 0 auto;">
+            <div class="split-row-table">
+                <div class="branch-cell" style="text-align: center;">
+                    <div style="color: var(--accent-green); font-weight: bold; font-size: 8.5pt; margin-bottom: 2px;">Sí (Corte o Marcador)</div>
+                    <div class="block action-block" style="border-color: var(--accent-green);">Generar Evento / Inyectar Nota</div>
+                </div>
+                <div class="branch-cell" style="text-align: center;">
+                    <div style="color: var(--text-muted); font-weight: bold; font-size: 8.5pt; margin-bottom: 2px;">No</div>
+                    <div class="block action-block">Mantener Escena / Sin Nota</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="svg-container">
+            <svg width="220" height="25" viewBox="0 0 220 25">
+                <path d="M 55 0 L 55 12 L 110 12 L 110 25 M 165 0 L 165 12 L 110 12" fill="none" stroke="#94a3b8" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <!-- Filtro Anti-Flapping -->
+        <div class="block calculation-box">
+            <strong>Filtro de Histéresis & Queue Sincronizada</strong><br>
+            <span style="font-size:8pt; font-weight:normal;">
+                Asegura cooldown mínimo para conmutación de cámara (<span class="fps-display-value">90 frames / 3s</span>) pero procesa marcadores manuales/IA de forma **instantánea**.
+            </span>
+        </div>
+
+        <div class="arrow-v"></div>
+
+        <!-- Override de Seguridad -->
+        <div class="block panic-override">
+            <strong>Bypass Manual / Panic Button & Hotkey Markers</strong><br>
+            <span style="font-size:8pt; font-weight:normal;">Botonera física / Teclado: Pausa la automatización o inyecta banderas de emergencia directas al EDL.</span>
+        </div>
+
+        <div class="arrow-v"></div>
+
+        <!-- Hub Concurrente con Payload Unificado -->
+        <div class="block task-hub">
+            Ejecución Sincrónica Cuádruple con Payload Multifuente Enriquecido<br>
+            <span style="font-size:7.5pt; font-weight:normal; text-transform:none; font-family: monospace;">
+                { "personaje": "Carlos", "target_cam": 2, "marker_type": "SCRIPT_DEVIATION", "note": "Improvisación fuera de guión", "tc_in": "10:15:30:12" }
+            </span>
+        </div>
+
+        <!-- CONECTOR SVG PARA 4 RAMAS -->
+        <div class="svg-container">
+            <svg width="1000" height="30" viewBox="0 0 1000 30">
+                <path d="M 500 0 L 500 12 L 125 12 L 125 30 
+                         M 500 12 L 375 12 L 375 30 
+                         M 500 12 L 625 12 L 625 30 
+                         M 500 12 L 875 12 L 875 30" 
+                      fill="none" stroke="#1e3a8a" stroke-width="2"/>
+            </svg>
+        </div>
+
+        <!-- CUATRO PIPELINES PARALELOS -->
+        <div class="split-row-table">
+            
+            <!-- RAMA 1: ATEM SWITCHER -->
+            <div class="branch-cell track-atem">
+                <div class="track-title">1. Pipeline ATEM (Hardware)</div>
+                
+                <div class="block track-node">
+                    <strong>Conmutación SDI/HDMI:</strong><br>
+                    Comandos TCP asíncronos a entrada física mapeada vía <span class="tech-tag">PyAtemMax</span>.
+                </div>
+                <div class="arrow-v"></div>
+
+                <div class="block track-node">
+                    <strong>Arquitectura Multihilo:</strong><br>
+                    Worker dedicado para sockets de control ATEM ISO sin bloquear la UI.
+                </div>
+                <div class="arrow-v"></div>
+
+                <div class="block track-node">
+                    <strong>Feedback Visual:</strong><br>
+                    Tally <span class="tech-tag">QFrame</span> actualizado cada <span class="fps-display-value">33.33 ms</span>.
+                </div>
+            </div>
+
+            <!-- RAMA 2: OBS VIA MCP -->
+            <div class="branch-cell track-obs">
+                <div class="track-title">2. Pipeline OBS MCP (Software)</div>
+                
+                <div class="block track-node" style="border-color: var(--accent-purple);">
+                    <strong>Cliente Protocolo MCP:</strong><br>
+                    Envío de eventos JSON/MCP a OBS Studio por WebSockets/SSE.
+                </div>
+                <div class="arrow-v"></div>
+
+                <div class="block track-node">
+                    <strong>Ajuste Dinámico de Escenas:</strong><br>
+                    Cambio automático a escenas específicas (ej. Escena "Carlos_CloseUp").
+                </div>
+                <div class="arrow-v"></div>
+
+                <div class="block track-node">
+                    <strong>Resiliencia de Red:</strong><br>
+                    Manejo de reconexión asíncrona en caso de micro-cortes de red.
+                </div>
+            </div>
+
+            <!-- RAMA 3: METADATOS & BEDROCK LOGGING -->
+            <div class="branch-cell track-meta">
+                <div class="track-title">3. Pipeline Metadata & Bedrock</div>
+                
+                <div class="block track-node" style="border-color: var(--accent-red);">
+                    <strong>Append-Only Log (.jsonl):</strong><br>
+                    Registro en caliente con ID de personaje, timecode y la nota ingresada/generada.
+                </div>
+                <div class="arrow-v"></div>
+
+                <div class="block track-node" style="border-color: var(--aws-amazon);">
+                    <strong>Sintetizador Bedrock (.drp):</strong><br>
+                    <span class="tech-tag aws-tag">bedrock:InvokeModel</span> consolida notas de guión y genera capítulos para NLE.
+                </div>
+                <div class="arrow-v"></div>
+
+                <div class="block track-node">
+                    <strong>Compilador .drp Final:</strong><br>
+                    Generación del proyecto para DaVinci Resolve estructurado.
+                </div>
+            </div>
+
+            <!-- RAMA 4: GENERACIÓN DE ARCHIVOS EDL CON MULTI-MARCADORES -->
+            <div class="branch-cell track-edl">
+                <div class="track-title">4. Pipeline Multi-Marker EDL Engine</div>
+                
+                <div class="block track-node" style="border-color: var(--accent-teal);">
+                    <strong>Clasificador de Origen de Nota:</strong><br>
+                    Procesa y categoriza la nota según su fuente en el Timecode SMPTE activo.
+                    <div class="marker-source-box">
+                        <strong>Fuentes Soportadas:</strong><br>
+                        • <u>Manual:</u> Notas escritas desde la App.<br>
+                        • <u>IA / Contexto:</u> Coincidencia con Guión cargado / Prompt a Bedrock.
+                    </div>
+                </div>
+                <div class="arrow-v"></div>
+
+                <div class="block track-node">
+                    <strong>Sintetizador CMX 3600 & Colors:</strong><br>
+                    Formatea comentarios con códigos de color de marcadores EDL:
+                    <div style="font-family: monospace; font-size: 7pt; margin-top:3px; color:#334155;">
+                        * FROM CLIP: CAM_02<br>
+                        * |C:Red |M:MANUAL_NOTE - Repetir toma<br>
+                        * |C:Green |M:SCRIPT_MATCH - Bloque 2 Iniciado<br>
+                        * |C:Magenta |M:AI_PROMPT - Error de pronunciación
+                    </div>
+                </div>
+                <div class="arrow-v"></div>
+
+                <div class="block track-node" style="border-color: var(--accent-teal);">
+                    <strong>Escritor de Archivos .edl en Caliente:</strong><br>
+                    Exportación continua de <span class="tech-tag edl-tag">session_markers.edl</span> con actualización atómica en tiempo real.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

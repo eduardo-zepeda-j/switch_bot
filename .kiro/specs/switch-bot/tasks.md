@@ -183,8 +183,8 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
 - [x] 7. Checkpoint — Verificar pipelines
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
-- [ ] 8. Backend de IA multi-proveedor (Patrón Strategy)
-  - [ ] 8.1 Implementar IABackendConfig con persistencia JSON
+- [x] 8. Backend de IA multi-proveedor (Patrón Strategy)
+  - [x] 8.1 Implementar IABackendConfig con persistencia JSON
     - Crear `switch_bot/ia/__init__.py`
     - Crear `switch_bot/ia/backend_config.py` con dataclass `IABackendConfig`
     - Implementar campos: backend_type, embedding_model_id, llm_model_id, aws_region, aws_profile, local_runtime, local_base_url, gguf_model_dir, timeouts
@@ -193,25 +193,25 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar persistencia en `~/.switch_bot/config.json` (lectura/escritura)
     - _Requisitos: 19.6, 19.1_
 
-  - [ ] 8.2 Test de propiedad: round-trip de persistencia de IABackendConfig
+  - [x] 8.2 Test de propiedad: round-trip de persistencia de IABackendConfig
     - **Property 15: Round-trip de persistencia de IABackendConfig**
     - **Valida: Requisitos 19.6**
 
-  - [ ] 8.3 Implementar IAModelInfo e IAModelCatalog
+  - [x] 8.3 Implementar IAModelInfo e IAModelCatalog
     - Crear `switch_bot/ia/model_catalog.py`
     - Implementar dataclass `IAModelInfo`: model_id, name, model_type ("embedding"/"llm"), size_bytes, context_window, description
     - Implementar dataclass `IAModelCatalog`: backend_type, embedding_models, llm_models, last_updated
     - Implementar `get_embedding_model_ids()` y `get_llm_model_ids()`
     - _Requisitos: 19.2, 19.3_
 
-  - [ ] 8.4 Implementar interfaz abstracta IABackend (ABC)
+  - [x] 8.4 Implementar interfaz abstracta IABackend (ABC)
     - Crear `switch_bot/ia/backend_base.py` con clase abstracta `IABackend`
     - Definir métodos abstractos: initialize(), validate_connection(timeout), list_available_models(), generate_embeddings(texts), analyze_context(prompt, context), compute_similarity(text_a, text_b)
     - Definir propiedades abstractas: backend_type, is_connected
     - Implementar excepciones: `BackendConnectionError`, `BackendTimeoutError`, `ModelDiscoveryError`
     - _Requisitos: 19.4, 19.5, 19.8, 19.9_
 
-  - [ ] 8.5 Implementar BedrockBackend (AWS Bedrock — Titan Embeddings V2 + Claude 3.5)
+  - [x] 8.5 Implementar BedrockBackend (AWS Bedrock — Titan Embeddings V2 + Claude 3.5)
     - Crear `switch_bot/ia/bedrock_backend.py` con clase `BedrockBackend(IABackend)`
     - Implementar `initialize()`: crear cliente boto3 con credenciales AWS
     - Implementar `validate_connection(timeout)`: health check con timeout de 10s
@@ -222,7 +222,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar retry con backoff exponencial (max 3 reintentos) para timeout/throttle
     - _Requisitos: 6.6, 19.2, 19.4, 19.5_
 
-  - [ ] 8.6 Implementar LocalBackend (Ollama / llama.cpp / GGUF)
+  - [x] 8.6 Implementar LocalBackend (Ollama / llama.cpp / GGUF)
     - Crear `switch_bot/ia/local_backend.py` con clase `LocalBackend(IABackend)`
     - Implementar `initialize()`: verificar que runtime local (Ollama/llama.cpp) esté activo
     - Implementar `validate_connection(timeout)`: verificar accesibilidad del runtime local
@@ -233,13 +233,13 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Manejar errores: runtime no iniciado, modelo no encontrado, out of memory
     - _Requisitos: 6.7, 19.3, 19.4, 19.5, 19.9_
 
-  - [ ] 8.7 Implementar EnrichmentResult (resultado normalizado)
+  - [x] 8.7 Implementar EnrichmentResult (resultado normalizado)
     - Crear `switch_bot/ia/enrichment_result.py` con dataclass `EnrichmentResult`
     - Campos: similarity_score [0.0, 1.0], is_deviation (bool), detected_text, expected_text, marker_type, color, metadata
     - Garantizar estructura idéntica independientemente del backend activo
     - _Requisitos: 6.2, 6.3, 19.8_
 
-  - [ ] 8.8 Implementar IAEnricher (orquestador agnóstico al backend — Strategy Pattern)
+  - [x] 8.8 Implementar IAEnricher (orquestador agnóstico al backend — Strategy Pattern)
     - Crear `switch_bot/ia/ia_enricher.py` con clase `IAEnricher`
     - Constructor recibe `IABackend` (interfaz abstracta) + `ScriptDocument`
     - Implementar `vectorize_script()`: genera embeddings del guión completo usando backend activo como base RAG
@@ -249,27 +249,27 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar manejo de errores de backend: log con SMPTE_TC + continuar sin detener sesión
     - _Requisitos: 6.1, 6.2, 6.3, 6.4, 6.5, 6.8, 17.1, 17.2, 17.3, 17.4_
 
-  - [ ] 8.9 Test de propiedad: score de similitud semántica acotado entre 0.0 y 1.0
+  - [x] 8.9 Test de propiedad: score de similitud semántica acotado entre 0.0 y 1.0
     - **Property 18: Score de similitud semántica está acotado entre 0.0 y 1.0**
     - **Valida: Requisitos 6.2**
 
-  - [ ] 8.10 Test de propiedad: umbral de similitud genera marcadores de desviación correctamente
+  - [x] 8.10 Test de propiedad: umbral de similitud genera marcadores de desviación correctamente
     - **Property 19: Umbral de similitud genera marcadores de desviación correctamente**
     - **Valida: Requisitos 6.3**
 
-  - [ ] 8.11 Test de propiedad: consistencia de estructura de salida entre backends
+  - [x] 8.11 Test de propiedad: consistencia de estructura de salida entre backends
     - **Property 17: Consistencia de estructura de salida entre backends**
     - **Valida: Requisitos 19.8**
 
-  - [ ] 8.12 Test de propiedad: resiliencia del IAEnricher ante errores de backend
+  - [x] 8.12 Test de propiedad: resiliencia del IAEnricher ante errores de backend
     - **Property 20: Resiliencia del IAEnricher ante errores de backend**
     - **Valida: Requisitos 6.8**
 
-  - [ ] 8.13 Test de propiedad: sugerencias publicitarias cumplen restricciones de formato
+  - [x] 8.13 Test de propiedad: sugerencias publicitarias cumplen restricciones de formato
     - **Property 11: Las sugerencias publicitarias cumplen las restricciones de formato**
     - **Valida: Requisitos 17.2, 17.3**
 
-- [ ] 9. Checkpoint — Verificar backend de IA y enriquecimiento
+- [x] 9. Checkpoint — Verificar backend de IA y enriquecimiento
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 - [ ] 10. Captura, inferencia y detección de anomalías
