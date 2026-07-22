@@ -300,11 +300,11 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Las anomalías generan marcadores sin cooldown (bypass de histéresis)
     - _Requisitos: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
 
-- [~] 11. Checkpoint — Verificar captura, inferencia y anomalías
+- [x] 11. Checkpoint — Verificar captura, inferencia y anomalías
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
-- [ ] 12. Gestión de sesión e inmutabilidad de backend
-  - [~] 12.1 Implementar SessionManager con control de ciclo de vida del backend
+- [x] 12. Gestión de sesión e inmutabilidad de backend
+  - [x] 12.1 Implementar SessionManager con control de ciclo de vida del backend
     - Crear `switch_bot/engines/session_manager.py`
     - Implementar inicio de sesión: validar backend accesible (timeout 10s), bloquear configuración
     - Implementar fin de sesión: desbloquear configuración, invocar generación de sugerencias publicitarias
@@ -312,7 +312,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar lógica de fallback: si backend no accesible → mensaje descriptivo + permitir seleccionar alternativo o reintentar sin reiniciar app
     - _Requisitos: 19.4, 19.5, 19.7_
 
-  - [~] 12.2 Test de propiedad: inmutabilidad de configuración de backend durante sesión activa
+  - [x] 12.2 Test de propiedad: inmutabilidad de configuración de backend durante sesión activa
     - **Property 16: Inmutabilidad de configuración de backend durante sesión activa**
     - **Valida: Requisitos 19.7**
 
