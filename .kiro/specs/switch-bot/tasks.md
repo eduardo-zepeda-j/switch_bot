@@ -272,8 +272,8 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
 - [x] 9. Checkpoint — Verificar backend de IA y enriquecimiento
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
-- [ ] 10. Captura, inferencia y detección de anomalías
-  - [ ] 10.1 Implementar CaptureManager con multiprocessing
+- [x] 10. Captura, inferencia y detección de anomalías
+  - [x] 10.1 Implementar CaptureManager con multiprocessing
     - Crear `switch_bot/capture/capture_manager.py`
     - Implementar captura de 4 feeds de video (CSD/DSHOW) en proceso dedicado
     - Implementar captura de audio PCM continuo
@@ -281,11 +281,11 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Usar `multiprocessing.Queue` para enviar frames al proceso de inferencia
     - _Requisitos: 1.1, 1.2, 1.3, 1.4, 5.1, 5.2, 5.3_
 
-  - [ ] 10.2 Test de propiedad: resiliencia ante desconexión parcial de feeds
+  - [x] 10.2 Test de propiedad: resiliencia ante desconexión parcial de feeds
     - **Property 13: Resiliencia ante desconexión parcial de feeds de video**
     - **Valida: Requisitos 1.3**
 
-  - [ ] 10.3 Implementar InferenceEngine (MediaPipe + VAD)
+  - [x] 10.3 Implementar InferenceEngine (MediaPipe + VAD)
     - Crear `switch_bot/inference/inference_engine.py`
     - Implementar `process_frame()`: MediaPipe gaze tracking sobre frame
     - Implementar `process_audio_chunk()`: VAD sobre chunk PCM
@@ -293,18 +293,18 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Proceso dedicado con Queue de entrada y salida
     - _Requisitos: 2.1, 2.2, 2.3, 2.4_
 
-  - [ ] 10.4 Implementar VocalAnomalyDetector
+  - [x] 10.4 Implementar VocalAnomalyDetector
     - Crear `switch_bot/engines/vocal_anomaly_detector.py`
     - Implementar `analyze_segment()`: detectar TOS, ERROR_DICCION, CONFUSION, REPETICION
     - Integrar con IAEnricher para comparación contra patrones y guión (usa interfaz abstracta, agnóstico al backend)
     - Las anomalías generan marcadores sin cooldown (bypass de histéresis)
     - _Requisitos: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
 
-- [ ] 11. Checkpoint — Verificar captura, inferencia y anomalías
+- [~] 11. Checkpoint — Verificar captura, inferencia y anomalías
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 - [ ] 12. Gestión de sesión e inmutabilidad de backend
-  - [ ] 12.1 Implementar SessionManager con control de ciclo de vida del backend
+  - [~] 12.1 Implementar SessionManager con control de ciclo de vida del backend
     - Crear `switch_bot/engines/session_manager.py`
     - Implementar inicio de sesión: validar backend accesible (timeout 10s), bloquear configuración
     - Implementar fin de sesión: desbloquear configuración, invocar generación de sugerencias publicitarias
@@ -312,12 +312,12 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Implementar lógica de fallback: si backend no accesible → mensaje descriptivo + permitir seleccionar alternativo o reintentar sin reiniciar app
     - _Requisitos: 19.4, 19.5, 19.7_
 
-  - [ ] 12.2 Test de propiedad: inmutabilidad de configuración de backend durante sesión activa
+  - [~] 12.2 Test de propiedad: inmutabilidad de configuración de backend durante sesión activa
     - **Property 16: Inmutabilidad de configuración de backend durante sesión activa**
     - **Valida: Requisitos 19.7**
 
 - [ ] 13. GUI, integración y cableado final
-  - [ ] 13.1 Implementar GUI PyQt6 con controles de sesión y selector de backend IA
+  - [~] 13.1 Implementar GUI PyQt6 con controles de sesión y selector de backend IA
     - Crear `switch_bot/gui/main_window.py` con ventana principal PyQt6
     - Implementar selector de Backend IA: dropdown AWS Bedrock / Backend Local
     - Implementar selector de modelos: al elegir backend, poblar dropdowns con modelos disponibles (embedding + LLM) usando `list_available_models()`
@@ -331,7 +331,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Deshabilitar selector de backend/modelos durante sesión activa (inmutabilidad visual)
     - _Requisitos: 4.1, 4.2, 4.3, 9.1, 10.3, 18.1, 18.2, 19.1, 19.2, 19.3, 19.5, 19.7, 19.9_
 
-  - [ ] 13.2 Implementar Coordinator (orquestador principal)
+  - [~] 13.2 Implementar Coordinator (orquestador principal)
     - Crear `switch_bot/coordinator.py`
     - Implementar event loop principal que conecta: CaptureManager → InferenceEngine → IAEnricher → DecisionEngine → HysteresisFilter → QuadDispatcher
     - Integrar PanicButton con prioridad inmediata
@@ -340,19 +340,19 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Gestionar ciclo de vida de procesos (start/stop de sesión)
     - _Requisitos: 5.1, 5.2, 5.3, 16.1, 16.2, 16.3, 16.4_
 
-  - [ ] 13.3 Implementar manejo de notas manuales y prompts de IA desde GUI
+  - [~] 13.3 Implementar manejo de notas manuales y prompts de IA desde GUI
     - Conectar señales de la GUI al Coordinator vía `multiprocessing.Queue`
     - Notas manuales → Pipeline EDL con categoría MANUAL_NOTE, color Red
     - Prompts de IA → IAEnricher → marcador AI_PROMPT, color Magenta
     - Marcadores manuales/IA bypasean el filtro de histéresis
     - _Requisitos: 4.1, 4.2, 4.3, 4.4_
 
-  - [ ] 13.4 Implementar presentación de sugerencias publicitarias al finalizar sesión
+  - [~] 13.4 Implementar presentación de sugerencias publicitarias al finalizar sesión
     - Al cerrar sesión, invocar `IAEnricher.generate_ad_suggestions()` y mostrar resultados en diálogo PyQt6
     - Presentar 3 sugerencias con texto propuesto y timecodes de referencia en formato legible
     - _Requisitos: 17.5_
 
-  - [ ] 13.5 Escribir tests de integración del flujo completo
+  - [~] 13.5 Escribir tests de integración del flujo completo
     - Test E2E: Captura mock → Inferencia → Decisión → 4 Pipelines
     - Test reconexión OBS: desconexión → reconexión → sincronización de escena
     - Test Pipeline ATEM: comando TCP a mock ATEM
@@ -361,7 +361,7 @@ Implementación incremental del sistema Switch_bot — un orquestador de producc
     - Test listado de modelos: Bedrock lista modelos AWS, Local lista modelos Ollama
     - _Requisitos: 16.2, 16.3, 11.3, 11.4, 10.1, 19.2, 19.3, 19.4, 19.5_
 
-- [ ] 14. Checkpoint final — Verificar integración completa
+- [~] 14. Checkpoint final — Verificar integración completa
   - Asegurar que todos los tests pasan, preguntar al usuario si surgen dudas.
 
 ## Notes
