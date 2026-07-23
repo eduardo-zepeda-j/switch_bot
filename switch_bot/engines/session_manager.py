@@ -260,7 +260,7 @@ class SessionManager:
     async def end_session(
         self,
         script_doc=None,
-    ) -> None:
+    ) -> list:
         """Finaliza la sesión activa, desbloquea configuración y genera sugerencias.
 
         Desbloquea la configuración del backend y, si hay un enricher y
@@ -270,13 +270,18 @@ class SessionManager:
         Args:
             script_doc: Documento de guión para generación de sugerencias
                        (opcional, requerido si se desea generar sugerencias).
+
+        Returns:
+            Lista de AdSuggestion generadas (puede estar vacía si no se
+            pudieron generar o no se proporcionó script_doc).
         """
         if not self._session_active:
             logger.warning("Se intentó finalizar sesión sin sesión activa.")
-            return
+            return []
 
         enricher = self._current_enricher
         session_log = self._session_log_path
+        suggestions: list = []
 
         # Desbloquear configuración
         self._session_active = False
@@ -310,6 +315,8 @@ class SessionManager:
         self._current_config = None
         self._current_enricher = None
         self._session_log_path = None
+
+        return suggestions
 
     # ------------------------------------------------------------------
     # Control de inmutabilidad de configuración

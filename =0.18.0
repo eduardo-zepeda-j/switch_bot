@@ -1,0 +1,5 @@
+Collecting msgspec
+  Downloading msgspec-0.21.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.8 kB)
+Downloading msgspec-0.21.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (224 kB)
+Installing collected packages: msgspec
+Successfully installed msgspec-0.21.1
