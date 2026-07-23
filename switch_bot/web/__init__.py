@@ -19,6 +19,7 @@ from switch_bot.web.protocol import (
     StateUpdatePayload,
     SwitchCommandPayload,
 )
+from switch_bot.web.state_sync import StateSyncProtocol, StateSyncResult
 
 __all__ = [
     "AIRequestPayload",
@@ -31,6 +32,8 @@ __all__ = [
     "ProtocolValidationError",
     "StateSyncAckPayload",
     "StateSyncBatchPayload",
+    "StateSyncProtocol",
+    "StateSyncResult",
     "StateUpdatePayload",
     "SwitchCommandPayload",
     "WebSocketHub",

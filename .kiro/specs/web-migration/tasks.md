@@ -89,8 +89,8 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Test get_pending_events retorna en orden cronológico SMPTE_TC
     - _Requirements: 4.1, 4.3, 4.7_
 
-- [ ] 6. StateSyncProtocol
-  - [ ] 6.1 Implementar StateSyncProtocol no bloqueante
+- [x] 6. StateSyncProtocol
+  - [x] 6.1 Implementar StateSyncProtocol no bloqueante
     - Crear módulo `switch_bot/web/state_sync.py`
     - Implementar `StateSyncProtocol` con BATCH_SIZE=50, ACK_TIMEOUT=10s, MAX_RETRIES=3
     - Implementar `start_sync()` que ejecuta en asyncio.Task independiente (no bloqueante)
@@ -101,7 +101,7 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Al completar, notificar operador con cantidad de eventos y rango SMPTE_TC
     - _Requirements: 11.1, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7_
 
-  - [ ] 6.2 Escribir unit tests para StateSyncProtocol
+  - [x] 6.2 Escribir unit tests para StateSyncProtocol
     - Test envío de lotes de 50 eventos con ACK exitoso
     - Test timeout de ACK provoca reintento (max 3)
     - Test conflictos se marcan con flag CONFLICT
