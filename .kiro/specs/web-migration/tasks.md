@@ -43,7 +43,7 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
 - [x] 3. Checkpoint - Verificar protocolo y hub
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 4. HeartbeatManager y detección de conectividad
+- [x] 4. HeartbeatManager y detección de conectividad
   - [x] 4.1 Implementar HeartbeatManager del servidor
     - Crear módulo `switch_bot/web/heartbeat.py`
     - Implementar `HeartbeatManager` con monitoreo periódico cada 1s
@@ -53,7 +53,7 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Descartar heartbeats con seq <= último procesado (out-of-order)
     - _Requirements: 10.1, 10.2, 10.4, 10.5, 10.6_
 
-  - [ ] 4.2 Implementar AgentWebSocketClient con heartbeat y reconnection
+  - [x] 4.2 Implementar AgentWebSocketClient con heartbeat y reconnection
     - Crear módulo `switch_bot/web/agent_client.py`
     - Implementar `AgentWebSocketClient` con conexión autenticada via JWT
     - Implementar heartbeat cada 1s con detección de desconexión tras 3 ciclos fallidos
@@ -62,7 +62,7 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Invocar `on_heartbeat_timeout()` que activa FallbackManager
     - _Requirements: 1.4, 1.5, 2.4, 10.1, 10.3, 10.5, 10.7_
 
-  - [ ] 4.3 Escribir unit tests para heartbeat y reconexión
+  - [x] 4.3 Escribir unit tests para heartbeat y reconexión
     - Test detección de 3 heartbeats fallidos activa fallback
     - Test ACK con seq inválido es descartado
     - Test backoff exponencial respeta 1s→2s→4s→8s→16s→30s max
