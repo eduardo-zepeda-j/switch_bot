@@ -108,11 +108,11 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Test sync no bloquea operaciones en tiempo real
     - _Requirements: 11.2, 11.4, 11.5, 11.6_
 
-- [ ] 7. Checkpoint - Verificar heartbeat, fallback y sync
+- [x] 7. Checkpoint - Verificar heartbeat, fallback y sync
   - Ensure all tests pass, ask the user if questions arise.
 
-- [ ] 8. AIRouter (enrutamiento Bedrock vs Local)
-  - [ ] 8.1 Implementar AIRouter con timeout diferenciado
+- [x] 8. AIRouter (enrutamiento Bedrock vs Local)
+  - [x] 8.1 Implementar AIRouter con timeout diferenciado
     - Crear módulo `switch_bot/web/ai_router.py`
     - Implementar `AIRouter` con BEDROCK_TIMEOUT=10s y LOCAL_TIMEOUT=30s
     - Implementar `route_request()` que enruta según `active_backend` ("bedrock" o "local")
@@ -123,7 +123,7 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Marcar segmentos no procesados sin detener la sesión
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8_
 
-  - [ ] 8.2 Escribir unit tests para AIRouter
+  - [x] 8.2 Escribir unit tests para AIRouter
     - Test enrutamiento a Bedrock cuando backend=bedrock
     - Test forward a agente cuando backend=local
     - Test timeout 10s en Bedrock marca segmento como no procesado
