@@ -69,8 +69,8 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Test reconexión exitosa tras recuperar heartbeat válido
     - _Requirements: 10.1, 10.2, 10.3, 10.6, 10.7_
 
-- [ ] 5. FallbackManager y buffer persistente
-  - [ ] 5.1 Implementar FallbackManager con SQLite WAL
+- [x] 5. FallbackManager y buffer persistente
+  - [x] 5.1 Implementar FallbackManager con SQLite WAL
     - Crear módulo `switch_bot/web/fallback.py`
     - Implementar `FallbackManager` con SQLite WAL para durabilidad
     - Crear tabla `fallback_events` con campos: id, smpte_tc, event_type, payload, created_at, synced, sync_attempts
@@ -82,7 +82,7 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Verificar capacidad máxima de 24 horas de eventos
     - _Requirements: 4.1, 4.2, 4.3, 4.7, 11.8_
 
-  - [ ] 5.2 Escribir unit tests para FallbackManager
+  - [x] 5.2 Escribir unit tests para FallbackManager
     - Test activación/desactivación de modo fallback
     - Test persistencia de eventos sobrevive reinicio del proceso
     - Test descarte FIFO al alcanzar MAX_EVENTS
