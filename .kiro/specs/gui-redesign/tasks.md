@@ -93,7 +93,7 @@ Rediseño incremental de la GUI PyQt6 de Switch_bot: nuevos widgets reutilizable
     - Create `switch_bot/gui/hardware_section.py`
     - Implement `HardwareSection(QWidget)` with signals: `atem_toggled(bool)`, `obs_toggled(bool)`, `config_changed()`
     - Layout: QCheckBox "Habilitar ATEM" + IP field (disabled when toggle off), QCheckBox "Habilitar OBS" + URL field (disabled when toggle off), output directory with browse button, video mode selector
-    - Methods: `is_atem_enabled()`, `is_obs_enabled()`, `get_atem_ip()`, `get_obs_url()`, `get_output_dir()`, `get_video_mode()`, `validate_for_session() -> tuple[bool, str]`
+    - Methods: `is_atem_enabled()`, `is_obs_enabled()`, `get_atem_ip()`, `get_obs_url()`, `get_output_dir()`, `get_video_mode()`, git`validate_for_session() -> tuple[bool, str]`
     - Implement `load_settings(QSettings)` and `save_settings(QSettings)`
     - Apply design system styling, tooltips for all interactive controls
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.7, 3.8, 3.9_
