@@ -8,6 +8,11 @@ Requires-Dist: pyatemmax>=1.0b1
 Requires-Dist: boto3>=1.28.0
 Requires-Dist: PyQt6>=6.5.0
 Requires-Dist: obs-websocket-py>=1.0.0
+Requires-Dist: httpx>=0.24.0
+Requires-Dist: aiohttp>=3.9.0
+Requires-Dist: pdfplumber>=0.10.0
+Requires-Dist: msgspec>=0.18.0
+Requires-Dist: PyJWT>=2.8.0
 Provides-Extra: dev
 Requires-Dist: pytest>=7.4.0; extra == "dev"
 Requires-Dist: hypothesis>=6.82.0; extra == "dev"
