@@ -131,8 +131,8 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Test estructura de salida idéntica para ambos backends
     - _Requirements: 5.4, 5.5, 5.6, 5.7, 5.8_
 
-- [ ] 9. SessionManagerWeb (gestión centralizada multi-operador)
-  - [ ] 9.1 Implementar SessionManagerWeb extendiendo SessionManager
+- [x] 9. SessionManagerWeb (gestión centralizada multi-operador)
+  - [x] 9.1 Implementar SessionManagerWeb extendiendo SessionManager
     - Crear módulo `switch_bot/web/session_manager.py`
     - Implementar `SessionManagerWeb(SessionManager)` con herencia del SessionManager existente
     - Implementar `create_session()` con UUID v4 y validación de rol director
@@ -145,7 +145,7 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Implementar transiciones de estado válidas: created→started, started→paused, paused→started, started/paused→finalized
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9_
 
-  - [ ] 9.2 Escribir unit tests para SessionManagerWeb
+  - [x] 9.2 Escribir unit tests para SessionManagerWeb
     - Test transiciones válidas e inválidas de estado de sesión
     - Test first-write-wins para comandos conflictivos
     - Test propagación de estado a todos los conectados
@@ -211,7 +211,7 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Retornar mensajes genéricos en errores de autenticación (no revelar campo incorrecto)
     - _Requirements: 16.3, 16.4, 16.5, 16.6, 16.7, 16.8, 16.9, 16.10, 16.11_
 
-  - [ ]* 21.4 Escribir unit tests para UserStore
+  - [ ] 21.4 Escribir unit tests para UserStore
     - Test `test_user_store_init_creates_root`: creación de root en primera ejecución con env vars
     - Test `test_user_store_init_no_env_vars_fails`: fallo si SWITCHBOT_ROOT_USERNAME/PASSWORD no definidos
     - Test `test_hash_round_trip`: hash_password + verify_password retorna True para misma contraseña
@@ -226,70 +226,70 @@ Migración de Switch_bot desde una aplicación monolítica PyQt6 a una arquitect
     - Test `test_change_password_requires_correct_current`: falla si current_password es incorrecta
     - _Requirements: 16.1, 16.2, 16.3, 16.5, 16.6, 16.7, 16.8, 16.9_
 
-  - [ ]* 21.5 Escribir property test — Property 1: Password hash round-trip
+  - [ ] 21.5 Escribir property test — Property 1: Password hash round-trip
     - **Property 1: Password hash round-trip**
     - Para cualquier contraseña válida (text, min_size=1, max_size=128), hash_password() seguido de verify_password(plain, hashed) retorna True, y el hash nunca contiene el plaintext como substring
     - Usar generador `hypothesis.strategies.text(min_size=1, max_size=128)`
     - Mínimo 100 iteraciones
     - **Validates: Requirements 16.2**
 
-  - [ ]* 21.6 Escribir property test — Property 2: Username validation accepts only conforming inputs
+  - [ ] 21.6 Escribir property test — Property 2: Username validation accepts only conforming inputs
     - **Property 2: Username validation accepts only conforming inputs**
     - Para cualquier string, create_user() lo acepta como username sii cumple `[a-zA-Z0-9_-]{3,64}`. Strings fuera del patrón son rechazados con ValueError y el store no cambia
     - Usar generadores `text()` para strings arbitrarios + `from_regex(r'[a-zA-Z0-9_-]{3,64}')` para válidos
     - Mínimo 100 iteraciones
     - **Validates: Requirements 16.3**
 
-  - [ ]* 21.7 Escribir property test — Property 3: Password hash never exposed in user retrieval
+  - [ ] 21.7 Escribir property test — Property 3: Password hash never exposed in user retrieval
     - **Property 3: Password hash never exposed in user retrieval**
     - Para cualquier usuario creado, get_user() y list_users() al serializar a UserResponse nunca incluyen hashed_password
     - Usar usuarios generados con campos aleatorios
     - Mínimo 100 iteraciones
     - **Validates: Requirements 16.4**
 
-  - [ ]* 21.8 Escribir property test — Property 4: Root user is undeletable
+  - [ ] 21.8 Escribir property test — Property 4: Root user is undeletable
     - **Property 4: Root user is undeletable**
     - Para cualquier secuencia de delete_user() apuntando al root username, el root permanece en el store con rol "administrador" y active sin cambios
     - Usar secuencias aleatorias de operaciones delete
     - Mínimo 100 iteraciones
     - **Validates: Requirements 16.5**
 
-  - [ ]* 21.9 Escribir property test — Property 5: Deactivation preserves user record
+  - [ ] 21.9 Escribir property test — Property 5: Deactivation preserves user record
     - **Property 5: Deactivation preserves user record**
     - Para cualquier usuario activo, deactivate_user() establece active=False y el usuario sigue recuperable con todos los demás campos (id, username, role, created_at) sin cambios
     - Usar usuarios aleatorios con campos variados
     - Mínimo 100 iteraciones
     - **Validates: Requirements 16.6**
 
-  - [ ]* 21.10 Escribir property test — Property 6: Login authentication round-trip
+  - [ ] 21.10 Escribir property test — Property 6: Login authentication round-trip
     - **Property 6: Login authentication round-trip**
     - Para cualquier usuario con active=True y password conocida, authenticate(username, correct_password) retorna JWT non-None, y authenticate(username, wrong_password) retorna None. Para active=False, siempre retorna None
     - Usar passwords aleatorios + mutaciones para "wrong"
     - Mínimo 100 iteraciones
     - **Validates: Requirements 16.7, 16.8**
 
-  - [ ]* 21.11 Escribir property test — Property 7: Password change round-trip
+  - [ ] 21.11 Escribir property test — Property 7: Password change round-trip
     - **Property 7: Password change round-trip**
     - Tras change_password(username, current, new) o reset_password(username, new) exitoso, verify_password(new, stored_hash) retorna True y verify_password(old, stored_hash) retorna False. change_password() con current incorrecto falla sin modificar hash
     - Usar pares (old_password, new_password) aleatorios
     - Mínimo 100 iteraciones
     - **Validates: Requirements 16.9, 16.10**
 
-  - [ ]* 21.12 Escribir property test — Property 8: RBAC enforcement on user CRUD
+  - [ ] 21.12 Escribir property test — Property 8: RBAC enforcement on user CRUD
     - **Property 8: RBAC enforcement on user CRUD**
     - Para cualquier usuario con rol "operador" o "director", todas las operaciones de gestión de usuarios (create, list, get, update, delete) son rechazadas con HTTP 403 y el store no cambia
     - Usar roles no-admin + operaciones CRUD aleatorias
     - Mínimo 100 iteraciones
     - **Validates: Requirements 16.11**
 
-  - [ ]* 21.13 Escribir property test — Property 9: Username uniqueness constraint
+  - [ ] 21.13 Escribir property test — Property 9: Username uniqueness constraint
     - **Property 9: Username uniqueness constraint**
     - Para cualquier username existente en el store, crear un segundo usuario con el mismo username falla con error y el store contiene exactamente un usuario con ese username
     - Usar usernames válidos duplicados
     - Mínimo 100 iteraciones
     - **Validates: Requirements 16.12**
 
-  - [ ]* 21.14 Escribir integration tests para flujo completo de usuarios
+  - [ ] 21.14 Escribir integration tests para flujo completo de usuarios
     - Test `test_full_login_flow_e2e`: Init → create user → login → usar JWT en endpoint protegido → change password → re-login
     - Test `test_admin_user_lifecycle`: Create → get → update role → deactivate → verify cannot login → admin reset password → reactivate → verify can login
     - Test `test_rate_limiting_blocks_after_5_failures`: 5 intentos fallidos → siguiente retorna 429/403

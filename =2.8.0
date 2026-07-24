@@ -1,0 +1,5 @@
+Collecting PyJWT
+  Downloading pyjwt-2.13.0-py3-none-any.whl.metadata (3.4 kB)
+Downloading pyjwt-2.13.0-py3-none-any.whl (31 kB)
+Installing collected packages: PyJWT
+Successfully installed PyJWT-2.13.0

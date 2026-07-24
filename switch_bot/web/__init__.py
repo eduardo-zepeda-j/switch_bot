@@ -1,9 +1,10 @@
 """Módulo web para la arquitectura híbrida cliente-servidor.
 
 Contiene el protocolo de comunicación bidireccional, WebSocket hub,
-heartbeat, fallback, sincronización de estado, y backend FastAPI.
+heartbeat, fallback, sincronización de estado, autenticación y backend FastAPI.
 """
 
+from switch_bot.web.auth import AuthService
 from switch_bot.web.fallback import FallbackManager
 from switch_bot.web.hub import WebSocketHub
 from switch_bot.web.protocol import (
@@ -24,6 +25,7 @@ from switch_bot.web.state_sync import StateSyncProtocol, StateSyncResult
 __all__ = [
     "AIRequestPayload",
     "AIResponsePayload",
+    "AuthService",
     "ChannelMessage",
     "FallbackManager",
     "HeartbeatPayload",
