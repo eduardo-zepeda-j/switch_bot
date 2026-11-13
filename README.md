@@ -3,7 +3,7 @@
 **Real-time, AI-assisted multi-camera production orchestrator.**
 Switch Bot watches and listens to a live production, decides which camera to cut to, drives the hardware and software switchers, and writes an edit-ready timeline (EDL + DaVinci Resolve project) with smart markers while the show is still running.
 
-Started at a [Código Facilito](https://codigofacilito.com) hackathon and grown into a full system for live productions.
+Designed for live productions where a small team has to run cameras, switching, and recording at the same time.
 
 ![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
 ![PyQt6](https://img.shields.io/badge/GUI-PyQt6-41CD52?logo=qt&logoColor=white)
